@@ -26,8 +26,8 @@ body {
     --popover: 36 33% 97%;
     --popover-foreground: 24 10% 10%;
 
-    /* Primary (Dusty Rose) - Darkened for better contrast */
-    --primary: 315 25% 55%;
+    /* Primary (Dusty Rose) */
+    --primary: 308 24% 60%;
     --primary-foreground: 0 0% 100%;
 
     /* Secondary (Blush Pink) - Adjusted for better contrast */

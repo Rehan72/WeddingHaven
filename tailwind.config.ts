@@ -21,34 +21,30 @@ const config = {
     },
     extend: {
       colors: {
-        // Base
-        background: stone[100],
-        foreground: stone[900],
-        // Primary Accent (Dusty Rose)
-        primary: {
-          DEFAULT: "#B486AB",
-          foreground: "#ffffff",
-        },
-        // Secondary Accent (Blush Pink)
-        secondary: {
-          DEFAULT: "#F5E1F3",
-          foreground: "#6C3483", // matches well with dark accent
-        },
-        // Dark Accent (Royal Purple)
-        accent: {
-          DEFAULT: "#6C3483",
-          foreground: "#ffffff",
-        },
-        // Optional: Stone shades for more control
-        stone,
-
-        // Keep these for compatibility with shadcn components
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+        primary: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+        destructive: {
+          DEFAULT: "hsl(var(--destructive))",
+          foreground: "hsl(var(--destructive-foreground))",
+        },
         muted: {
-          DEFAULT: stone[200],
-          foreground: stone[600],
+          DEFAULT: "hsl(var(--muted))",
+          foreground: "hsl(var(--muted-foreground))",
+        },
+        accent: {
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         popover: {
           DEFAULT: "hsl(var(--popover))",
@@ -57,10 +53,6 @@ const config = {
         card: {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
         },
       },
       borderRadius: {
