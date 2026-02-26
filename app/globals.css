@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+@layer base {
+  :root {
+    /* Base colors with improved contrast */
+    --background: 36 33% 97%;
+    --foreground: 24 10% 10%;
+
+    --card: 36 33% 97%;
+    --card-foreground: 24 10% 10%;
+
+    --popover: 36 33% 97%;
+    --popover-foreground: 24 10% 10%;
+
+    /* Primary (Dusty Rose) - Darkened for better contrast */
+    --primary: 315 25% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary (Blush Pink) - Adjusted for better contrast */
+    --secondary: 308 60% 92%;
+    --secondary-foreground: 282 43% 35%;
+
+    /* Accent (Royal Purple) - Adjusted for better contrast */
+    --accent: 282 43% 40%;
+    --accent-foreground: 0 0% 100%;
+
+    --muted: 36 20% 92%;
+    --muted-foreground: 24 5% 40%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 24 5% 88%;
+    --input: 24 5% 88%;
+    --ring: 282 43% 40%;
+
+    --radius: 0.5rem;
+
+    /* Sidebar specific variables */
+    --sidebar-background: 36 33% 97%;
+    --sidebar-foreground: 24 10% 10%;
+    --sidebar-primary: 315 25% 55%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 36 20% 92%;
+    --sidebar-accent-foreground: 24 10% 10%;
+    --sidebar-border: 24 5% 88%;
+    --sidebar-ring: 282 43% 40%;
+  }
+
+  .dark {
+    /* Dark mode with improved contrast */
+    --background: 24 15% 12%;
+    --foreground: 36 33% 97%;
+
+    --card: 24 15% 15%;
+    --card-foreground: 36 33% 97%;
+
+    --popover: 24 15% 15%;
+    --popover-foreground: 36 33% 97%;
+
+    /* Primary (Dusty Rose) - Brightened for dark mode */
+    --primary: 315 25% 65%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary (Blush Pink) - Adjusted for dark mode */
+    --secondary: 308 30% 25%;
+    --secondary-foreground: 308 60% 92%;
+
+    /* Accent (Royal Purple) - Brightened for dark mode */
+    --accent: 282 43% 55%;
+    --accent-foreground: 0 0% 100%;
+
+    --muted: 24 10% 20%;
+    --muted-foreground: 24 5% 75%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 24 5% 25%;
+    --input: 24 5% 25%;
+    --ring: 282 43% 55%;
+
+    /* Sidebar specific variables */
+    --sidebar-background: 24 15% 12%;
+    --sidebar-foreground: 36 33% 97%;
+    --sidebar-primary: 315 25% 65%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 24 10% 20%;
+    --sidebar-accent-foreground: 36 33% 97%;
+    --sidebar-border: 24 5% 25%;
+    --sidebar-ring: 282 43% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
