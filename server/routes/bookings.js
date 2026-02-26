@@ -17,6 +17,9 @@ router.post("/", authenticateToken, async (req, res) => {
       totalAmount,
       advanceAmount,
       specialRequests,
+      contactName,
+      contactEmail,
+      contactPhone,
     } = req.body
 
     // Check if hall exists
@@ -58,6 +61,9 @@ router.post("/", authenticateToken, async (req, res) => {
       balanceAmount,
       paymentStatus: advanceAmount > 0 ? "partial" : "pending",
       specialRequests,
+      contactName,
+      contactEmail,
+      contactPhone,
     })
 
     await booking.save()

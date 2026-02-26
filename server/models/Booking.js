@@ -57,6 +57,18 @@ const bookingSchema = new mongoose.Schema(
     specialRequests: {
       type: String,
     },
+    contactName: {
+      type: String,
+      required: true,
+    },
+    contactEmail: {
+      type: String,
+      required: true,
+    },
+    contactPhone: {
+      type: String,
+      required: true,
+    },
     cancellationReason: {
       type: String,
     },

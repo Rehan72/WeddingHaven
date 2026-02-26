@@ -1,3 +1,7 @@
+"use client"
+
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
@@ -24,8 +28,25 @@ import { FeatureCard } from "@/components/feature-card"
 import { HowItWorksCard } from "@/components/how-it-works-card"
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Calendar as CalendarComponent } from "@/components/ui/calendar"
+import { format } from "date-fns"
 
 export default function Home() {
+  const router = useRouter()
+  const [city, setCity] = useState("")
+  const [date, setDate] = useState<Date | undefined>()
+  const [eventType, setEventType] = useState("wedding")
+  const [guestCount, setGuestCount] = useState("100")
+
+  const handleSearch = () => {
+    const params = new URLSearchParams()
+    if (city) params.append("city", city)
+    if (date) params.append("date", date.toISOString())
+    if (eventType) params.append("eventType", eventType)
+    if (guestCount) params.append("minCapacity", guestCount)
+    
+    router.push(`/search-halls?${params.toString()}`)
+  }
+
   return (
     <div className="flex min-h-screen flex-col">
       <main className="flex-1">
@@ -49,7 +70,7 @@ export default function Home() {
               </p>
             </div>
             <div className="mt-8 md:mt-12">
-              <Card className="w-full max-w-4xl">
+              <Card className="w-full max-w-4xl shadow-2xl">
                 <CardContent className="p-4 md:p-6">
                   <Tabs defaultValue="halls" className="w-full">
                     <TabsList className="mb-4 grid w-full grid-cols-3">
@@ -61,11 +82,13 @@ export default function Home() {
                       <div className="grid gap-4 md:grid-cols-4">
                         <div className="space-y-2">
                           <label className="text-sm font-medium">Location</label>
-                          <div className="flex items-center rounded-md border px-3 py-2">
+                          <div className="flex items-center rounded-md border px-3 py-2 bg-background">
                             <MapPin className="mr-2 h-4 w-4 text-muted-foreground" />
                             <Input
                               type="text"
                               placeholder="City or area"
+                              value={city}
+                              onChange={(e) => setCity(e.target.value)}
                               className="border-0 p-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                             />
                           </div>
@@ -74,20 +97,20 @@ export default function Home() {
                           <label className="text-sm font-medium">Event Date</label>
                           <Popover>
                             <PopoverTrigger asChild>
-                              <Button variant="outline" className="w-full justify-start text-left font-normal">
+                              <Button variant="outline" className="w-full justify-start text-left font-normal bg-background">
                                 <CalendarIcon className="mr-2 h-4 w-4" />
-                                <span>Select date</span>
+                                <span>{date ? format(date, "PPP") : "Select date"}</span>
                               </Button>
                             </PopoverTrigger>
-                            <PopoverContent className="w-auto p-0">
-                              <CalendarComponent mode="single" initialFocus />
+                            <PopoverContent className="w-auto p-0" align="start">
+                              <CalendarComponent mode="single" selected={date} onSelect={setDate} initialFocus />
                             </PopoverContent>
                           </Popover>
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">Event Type</label>
-                          <Select>
-                            <SelectTrigger>
+                          <Select value={eventType} onValueChange={setEventType}>
+                            <SelectTrigger className="bg-background">
                               <SelectValue placeholder="Select event type" />
                             </SelectTrigger>
                             <SelectContent>
@@ -101,8 +124,8 @@ export default function Home() {
                         </div>
                         <div className="space-y-2">
                           <label className="text-sm font-medium">Guests</label>
-                          <Select>
-                            <SelectTrigger>
+                          <Select value={guestCount} onValueChange={setGuestCount}>
+                            <SelectTrigger className="bg-background">
                               <SelectValue placeholder="Guest count" />
                             </SelectTrigger>
                             <SelectContent>
@@ -116,7 +139,7 @@ export default function Home() {
                           </Select>
                         </div>
                       </div>
-                      <Button className="w-full md:w-auto">
+                      <Button className="w-full md:w-auto h-11 px-8" onClick={handleSearch}>
                         <Search className="mr-2 h-4 w-4" />
                         Search Halls
                       </Button>
@@ -147,38 +170,7 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <HallCard
-                name="Grand Celebration Palace"
-                location="Downtown, City Center"
-                image="/placeholder.svg?height=400&width=600"
-                price={25000}
-                rating={4.8}
-                reviewCount={324}
-                capacity={500}
-                tags={["AC", "Parking", "Catering"]}
-              />
-              <HallCard
-                name="Royal Wedding Manor"
-                location="Westside, Garden Area"
-                image="/placeholder.svg?height=400&width=600"
-                price={35000}
-                rating={4.9}
-                reviewCount={512}
-                capacity={800}
-                tags={["AC", "Parking", "Decoration"]}
-              />
-              <HallCard
-                name="Elegant Celebration Center"
-                location="Riverside, Lake View"
-                image="/placeholder.svg?height=400&width=600"
-                price={18000}
-                rating={4.7}
-                reviewCount={287}
-                capacity={300}
-                tags={["AC", "Catering", "DJ"]}
-              />
-            </div>
+            <FeaturedHalls />
 
             <div className="mt-10 flex justify-center">
               <Button variant="outline" className="flex items-center" asChild>
@@ -382,3 +374,60 @@ export default function Home() {
     </div>
   )
 }
+
+function FeaturedHalls() {
+  const [halls, setHalls] = useState<Hall[]>([])
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const fetchFeatured = async () => {
+      try {
+        const response = await api.getHalls({ limit: 3, sort: "rating" })
+        setHalls(response.halls)
+      } catch (error) {
+        console.error("Failed to fetch featured halls:", error)
+      } finally {
+        setLoading(false)
+      }
+    }
+    fetchFeatured()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {[1, 2, 3].map((i) => (
+          <div key={i} className="h-[400px] rounded-xl bg-muted animate-pulse" />
+        ))}
+      </div>
+    )
+  }
+
+  if (halls.length === 0) {
+    return (
+      <div className="text-center py-12 bg-muted/20 rounded-xl border border-dashed">
+        <p className="text-muted-foreground">No featured halls available at the moment.</p>
+      </div>
+    )
+  }
+
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {halls.map((hall) => (
+        <HallCard
+          key={hall._id}
+          id={hall._id}
+          name={hall.name}
+          location={`${hall.location.city}, ${hall.location.state}`}
+          image={hall.images[0]?.url}
+          price={hall.price}
+          rating={hall.rating}
+          reviewCount={hall.reviewCount}
+          capacity={hall.capacity}
+          tags={hall.amenities}
+        />
+      ))}
+    </div>
+  )
+}
+
